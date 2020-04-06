@@ -615,10 +615,10 @@ void adjust_weight(Obs *obs_list, int jday_interest)
 	pobs = obs_list;
 	
 #ifdef NRT
-	/*double Lap_w[16] = { 1, 0.986666667, 0.973333333, 0.96, 0.946666667, 0.933333333, 0.92, 0.906666667,
-											 0.893333333, 0.88, 0.866666667, 0.853333333, 0.84, 0.826666667, 0.813333333, 0.8 };*\
-	double Lap_w[16] = { 1, 0.99, 0.98, 0.97, 0.96, 0.95, 0.94, 0.93, 
-				0.92, 0.91, 0.90, 0.89, 0.88, 0.87, 0.85, 0.85 };
+	double Lap_w[16] = { 1, 0.986666667, 0.973333333, 0.96, 0.946666667, 0.933333333, 0.92, 0.906666667,
+											 0.893333333, 0.88, 0.866666667, 0.853333333, 0.84, 0.826666667, 0.813333333, 0.8 };
+	/*double Lap_w[16] = { 1, 0.99, 0.98, 0.97, 0.96, 0.95, 0.94, 0.93, 
+				0.92, 0.91, 0.90, 0.89, 0.88, 0.87, 0.85, 0.85 };*/
 #else
 	double Lap_w[9] = { 1, 0.9167, 0.8404, 0.7704, 0.7062, 0.6474, 0.5935, 0.5441, 0.4987 };	/*Laplace distribution */
 #endif
@@ -630,7 +630,7 @@ void adjust_weight(Obs *obs_list, int jday_interest)
 
 		for(b=0; b<NBAND; b++){
 			if(!pobs->is_fill[b]){
-				pobs->weight_v[b] = pobs->weight[b] * Lap_w[dist];
+				pobs->weight_v[b] = 0.4 * pobs->weight[b] + 0.3 * Lap_w[dist] + 0.3 * pobs->obscov;
 			}
 		}
 
@@ -638,8 +638,8 @@ void adjust_weight(Obs *obs_list, int jday_interest)
 	}
 }
 
-/*pobs->weight_v[b] = 0.4 * pobs->weight[b] + 0.3 * Lap_w[dist] + 0.3 * pobs->obscov;*\
-/*pobs->weight_v[b] = 0.5 * pobs->weight[b] + 0.5 * Lap_w[dist];*\
+/*pobs->weight_v[b] = pobs->weight[b] * Lap_w[dist];*/
+/*pobs->weight_v[b] = 0.5 * pobs->weight[b] + 0.5 * Lap_w[dist];*/
 
 /* calc kernels for selected obs 
  * weight may change after each selection
