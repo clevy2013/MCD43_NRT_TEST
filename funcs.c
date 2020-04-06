@@ -630,7 +630,8 @@ void adjust_weight(Obs *obs_list, int jday_interest)
 
 		for(b=0; b<NBAND; b++){
 			if(!pobs->is_fill[b]){
-				pobs->weight_v[b] = 0.4 * pobs->weight[b] + 0.3 * Lap_w[dist] + 0.3 * pobs->obscov;
+				/*pobs->weight_v[b] = 0.4 * pobs->weight[b] + 0.3 * Lap_w[dist] + 0.3 * pobs->obscov;*/
+				pobs->weight_v[b] = pobs->weight[b] * Lap_w[dist];
 			}
 		}
 
